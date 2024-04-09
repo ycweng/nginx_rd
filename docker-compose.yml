@@ -1,0 +1,24 @@
+version: "3.5"
+services:
+  nginx_proxy:
+    image: nginx:latest
+    container_name: nginx
+    privileged: true
+    ports:
+    - 8080:8080
+    - 8090:8090
+    restart: always
+    volumes:
+    - /ebs/rd-deployments/nginx_proxy/nginx.conf:/etc/nginx/nginx.conf
+      #- /ebs/rd-deployments/nginx_proxy/html:/usr/share/nginx/html
+    - /ebs/rd-deployments/nginx_proxy/proxy.conf:/etc/nginx/conf.d/default.conf
+    - /ebs/rd-deployments/nginx_proxy/elk_proxy.conf:/etc/nginx/conf.d/elk_proxy.conf
+    - /usr/share/zoneinfo/Asia/Taipei:/etc/localtime
+    networks:
+      - rd-service
+    extra_hosts:
+      - "devops_host:host-gateway"
+
+networks:
+  rd-service:
+    external: true
